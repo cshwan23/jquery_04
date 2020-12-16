@@ -1,0 +1,88 @@
+<!-- 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+jquery_06.html
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    => Jquery 를 사용하여 checkbox에 change 이벤트가 발생하면 실행할 코드를 설정한다.
+    => JQuery의 prop(~)메소드를 사용하여 하나의 checkbox를 클릭하면
+       여러개의 다른 checkbox를 체크하거나 해제한다.
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="jquery-1.11.0.min.js"></script>
+    <meta charset='utf-8'>
+    <script>
+        $(document).ready(function(){
+
+            //name=hobby_all 을 가진 태그를 관리하는 JQuery 객체의 메위주를 obj1에 저장.
+            var obj1 = $("[name=\"hobby_all\"]");
+
+            //name=hobby 을 가진 태그를 관리하는 JQuery 객체의 메위주를 obj2에 저장.
+            var obj2 = $("[name=\"hobby\"]");
+
+            //name=hobby_all 을 가진 태그에 change 라는 이벤트가 발생하면 실행할 코드 설정
+            // 즉 name=hobby_all을 가진 태그에 체크가 들어가거나 빠지면 실행할 코드 설정
+            obj1.change(function(){
+                
+                //----------------------------
+                // 만약에 name=hobby_all 을 가진 태그에 체크가 되어있으면
+                // name=hobby를 가진 모든 태그에 체크하기
+                //----------------------------
+                if(obj1.prop("checked")){
+                    obj2.prop("checked",true);
+                }
+                //----------------------------
+                // 만약에 name=hobby_all 을 가진 태그에 체크가 되어있지 않으면
+                // name=hobby를 가진 태그에 체크풀기
+                //----------------------------
+                else{
+                    obj2.prop("checked",false);
+                }
+                //----------------------------
+                // 위 if(~){~}else{~}구문은 아래 코드로 대체 가능하다
+                //----------------------------
+                // obj2.prop("checked", obj1.is(":checked"));
+
+            });
+
+            //name=hobby 을 가진 태그에 change 라는 이벤트가 발생하면 실행할 코드 설정
+            // 즉 name=hobby을 가진 태그에 체크가 들어가거나 빠지면 실행할 코드 설정
+            obj2.change(function(){
+                //----------------------------
+                // 만약에 name=hobby 을 가진 태그에 체크가 안된 놈이 1개이상 있으면
+                // name=hobby_all 를 가진 태그에 체크풀기
+                //----------------------------ﬁ
+                
+                if(obj2.filter(":checked").length>0){
+                    obj1.prop("checked",false);
+                }
+
+                //----------------------------
+                // 만약에 name=hobby을 가진 태그에 체크가 모두 체크되어있으면
+                // name=hobby_all 를 가진 태그에 체크하기
+                //----------------------------
+                var all_name_hobby = $("[name='hobby']").length;
+                if(obj2.filter(":checked").length==all_name_hobby){
+                    // 아래 두코딩은 같다 (:not이라는 선택자)
+                    //obj2.filter(":checked",false)
+                    //obj2.filter(":not(:checked)")
+
+                    obj1.prop("checked",true);
+                }
+
+
+            });
+        });
+    </script>
+</head>
+<body><center>
+    <hr>
+    <input type="checkbox" name="hobby_all" value="전체">전체
+    <hr>
+    <input type="checkbox" name="hobby" value="독서">독서
+    <input type="checkbox" name="hobby" value="운동">운동
+    <input type="checkbox" name="hobby" value="여행">여행
+    <input type="checkbox" name="hobby" value="수집">수집
+    
+</body>
+</html>

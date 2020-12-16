@@ -1,0 +1,140 @@
+<!-- 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+jquery_08_divPopup.html
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    => 중요 단어에 마우스를 대면 단어를 설명하는
+       [div 태그 영역]이 뜨고, 마우스를 빼면 사라진다.
+    => div 태그의 속성값 사용법에 주의한다.
+ -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+
+<style>
+    
+    .xxx {
+        font-family: 'Helvetica Neue';
+
+    }
+    
+    /*********************************************/
+    /* a태그의 CSS 설정 */
+    /*********************************************/
+    a{
+        text-decoration: none;
+        color: #fc5454;
+        font-style: italic;
+        font-weight: bold;
+        
+    }
+
+    /*********************************************/
+    /* div태그의 CSS 설정 */
+    /*********************************************/
+    .tip{
+        background-color: #d14646;
+        color: white;
+        position: absolute;
+        padding: 20px 20px 20px 20px ;
+        font-size: 12;
+        border-radius: 30px;
+    }
+</style>
+<script src="jquery-1.11.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+
+        //-------------------------
+        // class="tip" 을 가진 태그를 관리하는 JQuery 객체의 메위주를 변수 tipObj에 저장하기
+        //-------------------------
+        var tipObj = $(".tip");
+        //-------------------------
+        // class="tip" 을 가진 놈 숨김. 현재 class="tip" 가진 놈은 현재 div 태그 2개이다.
+        //-------------------------
+        tipObj.hide();
+        //-------------------------
+        //a 태그에 마우스 온 또는 마우스아웃 할 경우 실행할 자스 코딩 설정.
+        //-------------------------
+        $("a").hover(
+            function(){
+
+                var word = $(this).text();
+
+                // word 변수 에 저장된 문자열의 앞뒤 공백을 제거하기
+                // word = word.trim();
+                word=$.trim(word);
+
+                // class="word변수 저장 문자열" 가지고 있는 div 태그를 보이게 하기
+                tipObj.filter("."+word).show();
+
+                // 마우스를 갖다댄 곳의 x좌표, y좌표를 구해서 변수에 저장하기
+                var x = event.clientX+10;
+                var y = event.clientY+13;
+
+                // 마우스를 갖다댄 곳의 x좌표, y좌표로 div 태그 이동시키기
+                tipObj.filter("."+word).css({"top":y,"left":x});
+            }
+            ,function(){
+
+                //마우스를 뺀 a 태그가 감싸고 있는 문자열을 얻어 word 변수에 저장
+                var word = $(this).text();
+
+                // word 변수 에 저장된 문자열의 앞뒤 공백을 제거하기
+                // word = word.trim();
+                word=$.trim(word);
+
+                // 마우스를 빼면 사라지게 하기
+                // tipObj.filter("."+word).hide();
+
+                // 3초 뒤에 사라지게 하기. ( hide(slow)=> 천천히 사라지기 )
+                setTimeout(
+                    function(){
+                        tipObj.filter("."+word).hide("slow");
+                    }
+                    , 1000*1
+                );
+            });
+
+    });
+</script>
+</head>
+<body class="xxx">
+    <!------------------------------------------------->
+    <p>
+        <h4>1. Java</h4>
+        ● 가전 전자 제품에 들어가는 칩의 프로그램을 제어할 수 있는 언어인
+        <a href="#"> OAK </a> 를 발전시킨 언어이다.<br><br>
+        ● 1995년에 [Sun Micro Systems]에 의해 소개되었다.<br><br><br><br>
+
+        <h4>2. Java 특징</h4>
+        ▶︎ <a href="#">Platform</a>과 무관하게 동일하게 실행되므로 Platform에 독립적이다.<br><br>
+    </p>
+    <!------------------------------------------------->
+    <div class="tip OAK ">
+        ▶︎ OAK<br>
+        -1990년 초 마이크로시스템즈(Sun Microxyxtems)<br>
+        엔지니어 그룹의 [제임스 고슬링] 팀에서 개발되었다.<br>
+        -다양한 가전제품에서 동일하게 실행되는 간단한 언어이다.
+    </div>
+    <!------------------------------------------------->
+    <div class="tip Platform ">
+        ▶︎ Platform(플랫폼)<br>
+        -프로그램을 실행시킬 수 있는 하드웨어나 소프트웨어적 환경을 말한다.
+    </div>
+    <!------------------------------------------------->
+
+</body>
+</html>
+<!-- 
+    class="이름 이름" 
+    클래스값 이름 안에 공백을 주면 이름이 두개가 된다. 
+    
+    html() 
+    태그안의 영역 내 모든 html 코드+문자를 문자열로 출력
+    text() 
+    객체가 관리하는 영역내에서 태그가 끌어안은 문자열만 출력
+    
+    
+    -->

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <style>
+        .xxx{
+            font-family: 'Helvetica Neue';
+        }
+        a{
+            text-decoration: none;
+            color: rgb(255, 41, 123);
+            font-style: italic;
+            font-weight: bold;
+        }
+        .tip{
+            background-color: #d14646;
+            color: white;
+            position: absolute;
+            padding: 20px 20px 20px 20px;
+            font-size: 12;
+            border-radius: 30px;
+        }
+    </style>
+    <script src="jquery-1.11.0.min.js"></script>
+    <script>
+        
+        $(document).ready(function(){
+
+            //------------------------
+            // 1. div 태그를 일단 숨길거다.
+            //------------------------
+            var tipObj = $(".tip");
+
+            tipObj.hide();
+
+            //-------------------------------------
+            // 2. a태그에 마우스를 대거나 때면 실행할 자스코드
+            //-------------------------------------
+            $("a").hover( 
+
+                // hover - 1. a태그에 마우스를 대면 실행
+                function(){
+
+                    //-----------------------------------------
+                    // div 태그를 보이게 할거다.
+                    // 어떤 div? a태그의 문자열을 클래스명으로 가진 div 태그
+                    //-----------------------------------------
+
+                    // a태그를 감싼 문자열을 가져오기
+                    var word = $(this).text();
+
+                    // 문자열에 공백 있으면 공백 제거하기
+                    word = $.trim(word);
+                        // word = word.trim();
+
+                    // a태그의 문자열을 클래스명으로 가진 div 태그 보여주기
+                    // tip클래스를 가진 태그 중에 word를 가진 div 태그를 보여주기
+                    // $(태그).filter() 태그 중 ()괄호 안을 가지고 있는 놈만 선택 
+                    tipObj.filter("."+word).show();
+
+                    // 마우스를 댄(hover) 이벤트가 일어난 곳의 좌표를 변수에 담기
+                    var x = event.clientX;
+                    var y = event.clientY;
+
+                    // 마우스를 댄 좌표(x,y)로 div 태그 이동하기
+                    tipObj.filter("."+word).css({"top":y, "left":x})
+
+
+                }
+                // 마우스를 떼면(hover) 실행시킬 함수
+                ,function(){
+
+                     // a태그를 감싼 문자열을 가져오기
+                     var word = $(this).text();
+
+                     // 문자열에 공백 있으면 공백 제거하기
+                    word = $.trim(word);
+
+                    // 3초 뒤에 사라지게 하기
+                    setTimeout(function(){
+
+                        tipObj.filter("."+word).hide("slow");
+
+                    }, 1000*2);
+            });
+        });
+    </script>
+   
+</head>
+<body class="xxx">
+    <p>
+        <h3>1. Java</h3>
+    </p>
+    ● 가전 전자 제품에 들어가는 칩의 프로그램을 제어할 수 있는 언어인 
+    <a href="#"> OAK </a>를 발전시킨 언어이다.<br><br>
+    ● 1995년에 [Sun Micro Systems] 에 의해 소개되었다.<br><br><br><br>
+    <p>
+        <h3>2. Java의 특징</h3>
+    </p>
+    ● <a href="#"> Platform </a>과 무관하게 동일하게 실행되므로 Platform에 독립적이다.<br><br>
+    <!--------------------------------------------->
+    <div class="tip OAK">
+        ▶︎ OAK<br>
+        -1990년 초 마이크로시스템즈(Sun Microxyxtems)<br>
+        엔지니어 그룹의 [제임스 고슬링] 팀에서 개발되었다.<br>
+        -다양한 가전제품에서 동일하게 실행되는 간단한 언어이다.
+    </div>
+    <!--------------------------------------------->
+    <div class="tip Platform">
+        ▶︎ OAK<br>
+        -1990년 초 마이크로시스템즈(Sun Microxyxtems)<br>
+        엔지니어 그룹의 [제임스 고슬링] 팀에서 개발되었다.<br>
+        -다양한 가전제품에서 동일하게 실행되는 간단한 언어이다.
+    </div>
+    <!--------------------------------------------->
+
+</body>
+</html>

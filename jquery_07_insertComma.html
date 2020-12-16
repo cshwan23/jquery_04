@@ -1,0 +1,137 @@
+<!-- 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+jquery_07_insertComma.html
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    => 숫자만 입력받아 3자리마다 콤마를 제어 재입력하는 예제
+ -->
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="jquery-1.11.0.min.js"></script>
+
+<script>
+    // < 목표 >
+    // 1. num 의 맨 뒷자리부터 한글자씩 result 변수에 담고
+    // 2. num 변수 맨앞에 0으로시작하면 0은 제거한다. 
+    // 3. result 변수에 3의 배수번째 담을때마다 콤마를 넣어준다.
+    $(document).ready(function(){
+
+    // class="money" 를 가진 태그를 관리하는 JQuery 객체
+    var moneyObj = $(".money");
+
+    // 커서를 class=money가 있는 입력 양식에 들여놓는다.
+    moneyObj.focus();
+
+    // class=money를 가진 입력양식에서
+    // [keyup 이벤트]가 발생하면 자스코딩 실행하기
+    moneyObj.keyup(function(){
+        
+
+        // keyup 이벤트가 발생한 입력 양식의 value 값, 즉 유저가 입력한 데이터를
+        // 자바스크립트 영역으로 가져와 money 변수에 저장.
+        var money = $(this).val();
+        
+
+        
+        // 숫자만 골라내서 저장할 변수 선언
+        var num = "";
+
+        //1. 입력하는 값의 길이 만큼 돌린다.
+        for(var i=0; i<money.length; i++){
+
+            //입력하는 값의 첫번째 인덱스번호부터 즉 첫글자를 골라낸다.
+            //charAt(indexNo) 째자리번의 한글자를 골라낸다.
+            var i_str= money.charAt(i);
+
+            // money 변수 안의 데이터중 숫자만 골라내어 num 변수에 누적 시킴
+            // indexOf(찾을문자) 
+            if("0123456789".indexOf(i_str)>=0){
+
+                num = num +i_str
+            }
+        }
+        //2. num 변수 맨앞에 0으로시작하면 0은 제거한다. (단 0 한 개는 놔두자. 0원일 수 있으니)
+        while(num.charAt(0)=="0" && num.length>1){
+            num = num.substring(1)
+        }
+            // 위 반복문 코딩은 아래 코딩으로 대체가 가능하다
+            // if(num.length>1){
+            //     num = parseInt(num,10)+"";
+            // }
+
+        //3. comma(,) 를 포함한 최종 문자열을 저장할 변수 선언
+        var result = "";
+        // num에서 맨 뒤에서부터 하나씩 낚아채서 result
+        var cnt = 0;        
+        for(var i = num.length-1; i>=0; i--){
+            cnt++;
+                if(cnt%3==0){
+                    result= ","+ num.charAt(i)+result;             
+                }else{
+                    result = num.charAt(i)+result;
+                }
+        }
+        //맨 앞이 콤마로 시작하면 그 이후 문자를 낚아채 result에 저장
+        if(result.charAt(0)==","){
+            result = result.substring(1);
+        }
+
+
+        $(this).val(result);
+        
+        $(".msg").text(result);
+           
+
+    
+
+    });
+
+
+
+    });
+</script>
+</head>
+<body><center>
+    <input type="text" class="money" size="20" maxlength="13">원<br>
+    <div class="msg"></div>
+
+</body>
+ </html>
+<!-- // alert 창 띄우기 대신 찍어보는 방법. -->
+<!-- // $("body").append("<div>"+money+"</div>") -->
+<!-- 
+keyup(이벤트) : 키보드를 입력할 때 마다 일어날 이벤트(코딩) 
+charAt(): (여기에서).한글자만 빼낸다(몇번째) 
+indexOf() :(여기에서).찾는다(이게있는지) 
+substring() : (여기에서).복사한다(여기서부터~(끝까지);)
+ <예제 코드 짜는 순서>
+ 1. 바디태그 안에 텍스트 입력양식을 만든다.
+    - 입력양식 태그를 지칭할 클래스 이름을 만들어 준다.
+    - alert 으로 활용할 div 태그도 만든다.
+    - alert div 태그도 지칭할 클래스 이름을 만들어 준다.
+2. 바디태그를 읽은 후 실행할 자스코딩을 넣을 함수를 만든다.
+    - 1) 텍스트 입력양식 태그를 지칭할 제이쿼리 객체를 변수로 만든다.
+    - 2) 텍스트 입력양식 안에 커서를 두는 함수를 불러온다.
+3. 키보드를 입력할 때마다 이벤트를 설정하는 함수를 만든다. 
+    - 0) 그 안에 텍스트 입력양식의 value 값을 저장할 변수를 만든다. 
+    - 1) 숫자를 골라 내야한다. 숫자만 입력해야하므로.
+        - 1] 숫자를 담을 변수를 만든다
+        - 2] 숫자가 아닌건 다 빼야한다
+            - 1} 첫번째 문자만 빼서 따로 변수에 담는다. 
+            - 2} 그 변수가 숫자가 맞는지 아닌지 확인하여 숫자를 담는 변수에 집어넣는다
+    - 2) 숫자 변수안에 맨앞이 0이면 제거해야한다.
+        - 1] 숫자변수의 맨앞글자가 0이면 제거하고
+        - 2] 숫자변수안에 집어넣는다
+    - 3) 3의 배수 번째에 콤마를 넣어야 한다.
+        - 1] 최종 숫자를 담을 변수를 만든다. 콤마도 넣어야 하니.
+        - 2] 몇번째인지 카운트할 변수를 만든다. 
+        - 3] 옮길때는 맨뒤에서 한글자씩 옮겨야 한다.
+            - 1} 맨 뒷글자를 빼서 최종 변수에 담는다.
+            - 2} 3의 배수일 경우 콤마를 집어넣는다.
+    - 4) 맨 앞 글자가 콤마로 시작하면 콤마를 빼고 최종변수에 저장한다.
+
+
+
+
+
+ -->
